@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPS Widget Demo - SurveyFlow</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            background: #f8fafc;
+            color: #333;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .demo-header h1 {
+            font-size: 2.5rem;
+            color: #1a202c;
+            margin-bottom: 15px;
+        }
+        
+        .demo-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .demo-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #1a202c;
+        }
+        
+        .demo-card p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+        
+        .code-block {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 1px solid #2d3748;
+        }
+        
+        .integration-examples {
+            margin-top: 60px;
+        }
+        
+        .integration-examples h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #1a202c;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-card {
+                padding: 20px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>NPS Widget Demo</h1>
+            <p>See how easy it is to integrate beautiful NPS surveys into any website or app</p>
+        </div>
+        
+        <div class="demo-grid">
+            <!-- Default Widget -->
+            <div class="demo-card">
+                <h3>Default Widget</h3>
+                <p>Clean, professional design that works out of the box</p>
+                <div id="nps-demo-1"></div>
+            </div>
+            
+            <!-- Custom Colors -->
+            <div class="demo-card">
+                <h3>Custom Branded</h3>
+                <p>Easily customize colors to match your brand</p>
+                <div id="nps-demo-2"></div>
+            </div>
+        </div>
+        
+        <!-- Integration Examples -->
+        <div class="integration-examples">
+            <h2>Integration Examples</h2>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('basic')">Basic HTML</button>
+                <button class="tab" onclick="showTab('react')">React</button>
+                <button class="tab" onclick="showTab('vue')">Vue.js</button>
+                <button class="tab" onclick="showTab('wordpress')">WordPress</button>
+            </div>
+            
+            <!-- Basic HTML -->
+            <div id="basic-tab" class="tab-content active">
+                <div class="demo-card">
+                    <h3>Basic HTML Integration</h3>
+                    <p>Just add this to any webpage:</p>
+                    <div class="code-block">
+&lt;!-- Add to your HTML --&gt;
+&lt;div id="nps-survey"&gt;&lt;/div&gt;
+
+&lt;!-- Include the widget script --&gt;
+&lt;script src="https://your-domain.com/components/nps-widget.js"&gt;&lt;/script&gt;
+
+&lt;!-- Initialize the widget --&gt;
+&lt;script&gt;
+  NPSWidget.init({
+    containerId: 'nps-survey',
+    apiKey: 'your-api-key',
+    colors: {
+      primary: '#667eea',
+      secondary: '#764ba2'
+    },
+    text: {
+      question: 'How likely are you to recommend us?'
+    }
+  });
+&lt;/script&gt;
+                    </div>
+                </div>
+            </div>
+            
+            <!-- React -->
+            <div id="react-tab" class="tab-content">
+                <div class="demo-card">
+                    <h3>React Component</h3>
+                    <p>Easy integration with React applications:</p>
+                    <div class="code-block">
+import { useEffect, useRef } from 'react';
+
+function NPSSurvey({ apiKey, customColors }) {
+  const containerRef = useRef(null);
+  const widgetRef = useRef(null);
+
+  useEffect(() => {
+    // Load the widget script
+    const script = document.createElement('script');
+    script.src = 'https://your-domain.com/components/nps-widget.js';
+    script.onload = () => {
+      widgetRef.current = window.NPSWidget.init({
+        containerId: containerRef.current.id,
+        apiKey: apiKey,
+        colors: customColors,
+        onComplete: (score, feedback) => {
+          console.log('NPS submitted:', { score, feedback });
+        }
+      });
+    };
+    document.body.appendChild(script);
+
+    return () => {
+      if (widgetRef.current) {
+        widgetRef.current.destroy();
+      }
+    };
+  }, [apiKey, customColors]);
+
+  return &lt;div ref={containerRef} id="nps-react-survey" /&gt;;
+}
+
+// Usage
+&lt;NPSSurvey 
+  apiKey="your-api-key"
+  customColors={{ primary: '#667eea' }}
+/&gt;
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vue.js -->
+            <div id="vue-tab" class="tab-content">
+                <div class="demo-card">
+                    <h3>Vue.js Component</h3>
+                    <p>Integrate with Vue.js applications:</p>
+                    <div class="code-block">
+&lt;template&gt;
+  &lt;div :id="containerId" class="nps-container"&gt;&lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: 'NPSSurvey',
+  props: {
+    apiKey: String,
+    customColors: Object,
+    question: String
+  },
+  data() {
+    return {
+      containerId: 'nps-vue-' + Math.random().toString(36).substr(2, 9),
+      widget: null
+    };
+  },
+  async mounted() {
+    // Load the widget script
+    if (!window.NPSWidget) {
+      await this.loadScript('https://your-domain.com/components/nps-widget.js');
+    }
+    
+    this.widget = window.NPSWidget.init({
+      containerId: this.containerId,
+      apiKey: this.apiKey,
+      colors: this.customColors,
+      text: {
+        question: this.question || 'How likely are you to recommend us?'
+      }
+    });
+  },
+  beforeDestroy() {
+    if (this.widget) {
+      this.widget.destroy();
+    }
+  },
+  methods: {
+    loadScript(src) {
+      return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        document.body.appendChild(script);
+      });
+    }
+  }
+};
+&lt;/script&gt;
+                    </div>
+                </div>
+            </div>
+            
+            <!-- WordPress -->
+            <div id="wordpress-tab" class="tab-content">
+                <div class="demo-card">
+                    <h3>WordPress Integration</h3>
+                    <p>Add to any WordPress site via functions.php or plugin:</p>
+                    <div class="code-block">
+// Add to your theme's functions.php
+function add_nps_widget() {
+    wp_enqueue_script(
+        'nps-widget', 
+        'https://your-domain.com/components/nps-widget.js', 
+        array(), 
+        '1.0.0', 
+        true
+    );
+    
+    wp_add_inline_script('nps-widget', '
+        document.addEventListener("DOMContentLoaded", function() {
+            if (document.getElementById("nps-survey")) {
+                NPSWidget.init({
+                    containerId: "nps-survey",
+                    apiKey: "your-api-key",
+                    colors: {
+                        primary: "#667eea"
+                    }
+                });
+            }
+        });
+    ');
+}
+add_action('wp_enqueue_scripts', 'add_nps_widget');
+
+// Then add this shortcode function
+function nps_widget_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'id' => 'nps-survey-' . rand(1000, 9999)
+    ), $atts);
+    
+    return '&lt;div id="' . esc_attr($atts['id']) . '"&gt;&lt;/div&gt;';
+}
+add_shortcode('nps_widget', 'nps_widget_shortcode');
+
+// Use in posts/pages: [nps_widget]
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Auto-Initialize Example -->
+        <div class="demo-card" style="margin-top: 40px;">
+            <h3>Auto-Initialize with Data Attributes</h3>
+            <p>For the simplest integration, use data attributes (no JavaScript required):</p>
+            <div class="code-block">
+&lt;!-- Widget auto-initializes on page load --&gt;
+&lt;div 
+  data-nps-widget
+  data-api-key="your-api-key"
+  data-question="How satisfied are you with our service?"
+  data-primary-color="#ff6b6b"
+  id="auto-nps"&gt;
+&lt;/div&gt;
+
+&lt;script src="https://your-domain.com/components/nps-widget.js"&gt;&lt;/script&gt;
+            </div>
+            <div id="auto-nps" data-nps-widget data-question="How satisfied are you with our service?" data-primary-color="#ff6b6b"></div>
+        </div>
+    </div>
+
+    <!-- Load the actual widget -->
+    <script src="../components/nps-widget.js"></script>
+    
+    <script>
+        // Initialize demo widgets
+        NPSWidget.init({
+            containerId: 'nps-demo-1',
+            text: {
+                question: 'How likely are you to recommend SurveyFlow?'
+            }
+        });
+
+        NPSWidget.init({
+            containerId: 'nps-demo-2',
+            colors: {
+                primary: '#ff6b6b',
+                secondary: '#feca57',
+                text: '#2c2c54'
+            },
+            text: {
+                question: 'Rate your experience with our demo',
+                followUpPrompt: 'Tell us what you think!',
+                submitButton: 'Send Feedback'
+            }
+        });
+        
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
