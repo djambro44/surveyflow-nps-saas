@@ -1,0 +1,35 @@
+{
+  "name": "surveyflow-nps-saas",
+  "version": "1.0.0",
+  "description": "Simple NPS surveys with powerful analytics dashboard",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -o",
+    "build": "echo 'Static site - no build needed'",
+    "test": "echo 'Tests coming soon'",
+    "deploy": "vercel --prod",
+    "lint": "echo 'Linting coming soon'"
+  },
+  "keywords": [
+    "nps",
+    "survey",
+    "analytics",
+    "customer-feedback",
+    "saas",
+    "net-promoter-score",
+    "dashboard"
+  ],
+  "author": "djambro44",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/djambro44/surveyflow-nps-saas.git"
+  },
+  "homepage": "https://github.com/djambro44/surveyflow-nps-saas#readme",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
