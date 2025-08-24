@@ -16,6 +16,9 @@ function closeModal(type) {
         document.body.style.overflow = 'auto'; // Restore scrolling
     }
 }
+// Expose modal functions globally for HTML event handlers
+window.openModal = openModal;
+window.closeModal = closeModal;
 
 // Form validation and submission
 function validateEmail(email) {
