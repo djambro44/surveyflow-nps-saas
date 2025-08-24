@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SurveyFlow Dashboard</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="favicon.ico">
+    <!-- Add any additional dashboard-specific styles here -->
+</head>
+<body>
+    <!-- Header (reuse from main site) -->
+    <header class="site-header">
+        <div class="container">
+            <h1>SurveyFlow Dashboard</h1>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="#" id="logoutBtn">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard-main container">
+        <section class="dashboard-metrics gradient-bg">
+            <h2>Your NPS Overview</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>NPS Score</h3>
+                    <div class="metric-value" id="npsScore">--</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Promoters</h3>
+                    <div class="metric-value" id="promoters">--</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Passives</h3>
+                    <div class="metric-value" id="passives">--</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Detractors</h3>
+                    <div class="metric-value" id="detractors">--</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-table">
+            <h2>Individual NPS Responses</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>NPS Score</th>
+                        <th>User ID</th>
+                        <th>Classification</th>
+                        <th>Comment</th>
+                        <th>Feature Callouts</th>
+                    </tr>
+                </thead>
+                <tbody id="responsesTable">
+                    <!-- Rows will be populated by JS -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Footer (reuse from main site) -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 SurveyFlow. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase CDN and dashboard logic -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfUNJg_WdGXuUGLEoFFu2c49nAmfex3b4",
+        authDomain: "surveyflow-nps-saas.firebaseapp.com",
+        projectId: "surveyflow-nps-saas",
+        storageBucket: "surveyflow-nps-saas.firebasestorage.app",
+        messagingSenderId: "151787390698",
+        appId: "1:151787390698:web:cadb338008f4ea36cbf993",
+        measurementId: "G-1PS843NGGE"
+      };
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+
+      // Auth check and redirect
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          window.location.href = "index.html";
+        } else {
+          // Fetch and render dashboard data
+          await loadDashboard(user);
+        }
+      });
+
+      // Logout button
+      document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await signOut(auth);
+        window.location.href = "index.html";
+      });
+
+      async function loadDashboard(user) {
+        // Query responses for this user
+        const responsesRef = collection(db, "responses");
+        const q = query(responsesRef, where("userId", "==", user.email || user.uid));
+        const querySnapshot = await getDocs(q);
+        const responses = [];
+        querySnapshot.forEach(doc => {
+          responses.push(doc.data());
+        });
+        renderMetrics(responses);
+        renderTable(responses);
+      }
+
+      function renderMetrics(responses) {
+        // Calculate NPS metrics
+        let promoters = 0, passives = 0, detractors = 0;
+        responses.forEach(r => {
+          if (r.score >= 9) promoters++;
+          else if (r.score >= 7) passives++;
+          else detractors++;
+        });
+        const total = responses.length;
+        const npsScore = total ? Math.round(((promoters - detractors) / total) * 100) : '--';
+        document.getElementById('npsScore').textContent = npsScore;
+        document.getElementById('promoters').textContent = `${promoters} (${total ? Math.round((promoters/total)*100) : 0}%)`;
+        document.getElementById('passives').textContent = `${passives} (${total ? Math.round((passives/total)*100) : 0}%)`;
+        document.getElementById('detractors').textContent = `${detractors} (${total ? Math.round((detractors/total)*100) : 0}%)`;
+      }
+
+      function renderTable(responses) {
+        const tbody = document.getElementById('responsesTable');
+        tbody.innerHTML = '';
+        responses.forEach(r => {
+          const classification = r.score >= 9 ? 'Promoter' : r.score >= 7 ? 'Passive' : 'Detractor';
+          const featureCallouts = Array.isArray(r.featureCallouts) ? r.featureCallouts.join(', ') : '';
+          const row = `<tr>
+            <td>${r.score}</td>
+            <td>${r.userId}</td>
+            <td>${classification}</td>
+            <td>${r.comment || ''}</td>
+            <td>${featureCallouts}</td>
+          </tr>`;
+          tbody.insertAdjacentHTML('beforeend', row);
+        });
+      }
+    </script>
+</body>
+</html>

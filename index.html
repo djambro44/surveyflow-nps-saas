@@ -387,6 +387,7 @@
                                 alert('Login successful! Redirecting to dashboard...');
                                 closeModal('login');
                                 loginForm.reset();
+                                window.location.href = 'dashboard.html';
                             } catch (error) {
                                 showFormError('loginEmail', error.message);
                             }
