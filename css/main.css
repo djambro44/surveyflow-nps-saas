@@ -1,3 +1,117 @@
+/* Dashboard Styles */
+.dashboard-main {
+    padding: 60px 0 40px 0;
+    min-height: 80vh;
+}
+
+.dashboard-metrics {
+    margin-bottom: 40px;
+    padding: 40px 0;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(102,126,234,0.08);
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.metric-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(102,126,234,0.07);
+    padding: 32px 24px;
+    text-align: center;
+    border: 1px solid #e1e5e9;
+}
+
+.metric-card h3 {
+    font-size: 1.1rem;
+    color: #667eea;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.metric-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.dashboard-table {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 2px 12px rgba(102,126,234,0.07);
+    padding: 32px 24px;
+    margin-bottom: 40px;
+}
+
+.dashboard-table h2 {
+    font-size: 1.5rem;
+    color: #764ba2;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.dashboard-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.dashboard-table th, .dashboard-table td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #e1e5e9;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.dashboard-table th {
+    background: #f5f7fa;
+    color: #667eea;
+    font-weight: 600;
+}
+
+.dashboard-table tr:last-child td {
+    border-bottom: none;
+}
+
+.site-header, .site-footer {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 24px 0;
+}
+
+.site-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.site-header nav {
+    float: right;
+}
+
+.site-header nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 24px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.site-header nav a:hover {
+    color: #38ef7d;
+}
+
+.site-footer {
+    text-align: center;
+    font-size: 1rem;
+    opacity: 0.85;
+}
 /* SurveyFlow - Main Stylesheet */
 
 * {
